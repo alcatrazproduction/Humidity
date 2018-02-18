@@ -1,0 +1,297 @@
+/*****************************************************************************
+ * Profinet Variables defined for interface
+ *
+ *	Date		Who		Why
+ *===========================================================================
+ *	01.12.14	YHU		Added CPUID Variable for copy check
+ * 	02.12.14	YHU		Added Reset error signals
+ * 	26.01.15	YHU		Added Max limit value, relative
+ * 						Added Marked block for future use ( 2048 ) 
+ *
+ * **************************************************************************/
+
+// ***** Emulation of CPU 315-2 PN/DP
+### Marked Bloc from Humidity
+
+VACUSTART			# 0.0			M0.0			wo	Trigger for vacustart signal ( Profinet )
+DIEOPEN				# 0.1			M0.1			wo	Trigger for dieopen signal ( Profinet )
+RESERVED			# 2..2048		M2..2048			Reserved for future use
+
+### DataBlocs from HighVac
+
+#define	HV_DIECLOSE_ADDR		0
+#define HV_DIECLOSE_BIT			0
+
+#define	HV_EJECTOUT_ADDR		0
+#define HV_EJECTOUT_BIT			1
+
+#define	HV_SWITCHOVER_ADDR		0
+#define HV_SWITCHOVER_BIT		2
+
+#define	HV_SETTING_ADDR			0
+#define HV_SETTING_BIT			3
+
+#define	HV_VACCUMLOCK_ADDR		0
+#define HV_VACCUMLOCK_BIT		4
+
+#define	HV_DIEOPEN_ADDR			0
+#define HV_DIEOPEN_BIT			5
+
+#define	HV_VACCUMSTART_ADDR		0
+#define HV_VACCUMSTART_BIT		6
+
+#define	HV_SPRAYER_ADDR			0
+#define HV_SPRAYER_BIT			7
+
+#define	HV_AIRDIRECT_ADDR		1
+#define HV_AIRDIRECT_BIT		0
+
+#define	HV_VACCUMDIRECT_ADDR	1
+#define HV_VACCUMDIRECT_BIT		1
+
+// OUTPUT
+
+#define	HV_GREEN_ADDR			0
+#define HV_GREEN_BIT			2
+
+#define	HV_RED_ADDR				0
+#define HV_RED_BIT				3
+
+#define	HV_GREENEXT_ADDR		0
+#define HV_GREENEXT_BIT			4
+
+#define	HV_REDEXT_ADDR			0
+#define HV_REDEXT_BIT			5
+
+### DataBlocs from sensor
+
+Globals variables data bloc ( DB001.xxx.xxx )
+
+// PRIVATE SIEMENS VARIABLE, ONLY TO MASK THIS ZONE
+_Coordination;		# 000												?? Used internal from HMI
+_date_heure[6];		# 002												?? Used internal from HMI
+_tacheAPI[4];		# 014												?? Used internal from HMI
+_Enregistrement[5];	# 022												?? Used internal from HMI
+
+// Public Humidity access for Hmi
+
+VERSION				# 032		DB001.DBX.32	String[78]				ro	Version of pcduino program
+HVMAXLIMIT			# 126		DB001.DBW.126	unsigned word			ro	Max value of the limit for all channel, converted to relative.
+HVOUTTOL			# 128		DB001.DBW.128	unsigned word			wo	HighVac Outol variable DB number
+HVOUTTOLBYTE		# 130		DB001.DBW.130	unsigned word			wo	HighVac Outol variable DB offset
+HVOUTTOLBIT			# 132		DB001.DBW.132	unsigned word			wo	HighVac Outol variable bit
+HVCLEAN				# 134		DB001.DBW.134	unsigned word			wo	HighVac Clean variable DB number
+HVCLEANBYTE			# 136		DB001.DBW.136	unsigned word			wo	HighVac Clean variable DB offset
+HVCLEANBIT			# 138		DB001.DBW.138	unsigned word			wo	HighVac Clean variable bit
+CALIBRATIONLIMIT	# 140		DB001.DBW.140	unsigned word			r/w	Calibration max value ( not implemented actualy )
+FLAGSBITS			# 142		DB001.DBW.142	unsigned char			r/w	Some flags ( not persistant !!!)
+																			bit 0	: 	DieOpen signal
+																			bit 1	:	Vacustart
+<<<WARNING>>>																bit 8	:	Reset all error ( strobe )
+<<<SAME LOCATION, High bytes only strobe>>>									bit 9	: 	Reset humiditiy to high ( strobe )
+																			bit	10	: 	Reset calibration error (strobe )
+																			
+SIGNALBITS;			# 142		DB001.DBW.142	unsigned char			r/w	Some signal, reserved for future use
+CHANNEL_2_READ		# 144		DB001.DBW.144	unsigned word			wo	write here to read the value of the channel num (  0 .. 3 )
+CHANNEL_HUMIDITY	# 146		DB001.DBW.146	unsigned word			ro	Humidity value of channel CHANNEL_2_READ
+CHANNEL_TEMP		# 148		DB001.DBW.148	unsigned word			ro	Temperature value of channel CHANNEL_2_READ, read as a word, but only LSByte used
+CHANNEL_VACCUM		# 150		DB001.DBW.150	unsigned word			ro	Vaccum at sensor value of channel CHANNEL_2_READ
+USEAUTOFACTOR		# 152		DB001.DBW.152	unsigned word			r/w	0: use constant value set by hmi and zero fromn hmi
+																			1: use constant value set by hmi and zero from min data
+																			2: use auto factor and zero fromn hmi
+																			3: all auto
+AUTOFACTOR			# 154		DB001.DBW.154	unsigned word			ro	Auto found zoom factor
+DISPLAYZERO			# 156		DB001.DBW.156	unsigned word			r/w	Assigned zero fromn hmi ( base )
+DISPLAYFACTOR		# 158		DB001.DBW.158	unsigned word			r/w	Assigned zoom factor from hmi
+CURRENTINJECTION 	# 160		DB001.DBD.160	unsigned double word	ro	Next injection number to be save in database
+PARTNAME 			# 164		DB001.DBX.164	String[78]				r/w	name of the parts when not directly read from HighVac
+PRODNUM				# 244		DB001.DBW.244	unsigned word			r/w	production number of the parts when not directly read from HighVac
+T1 					# 246		DB001.DBW.246	unsigned word			r/w T1 when not directly read from HighVac
+T2 					# 248		DB001.DBW.248	unsigned word			r/w	T2 when not directly read from HighVac
+T3 					# 250		DB001.DBW.250	unsigned word			r/w	T3 when not directly read from HighVac
+CMD 				# 252		DB001.DBX.252	String[78]				r/w	reserved for future use
+NUMCHAN 			# 332		DB001.DBW.332	unsigned word			r/w	Number of channel connected and used
+SAMPLERATE  		# 334		DB001.DBW.334	unsigned word			r/w	Sample rate, normaly 20ms must not be changed
+LOADCURVE 			# 336		DB001.DBW.336	unsigned word			ro	Data ready to be read
+REQCURVE 			# 338		DB001.DBW.338	unsigned word			wo	Data request to be send
+REQUESTINJECTION	# 340		DB001.DBD.340	unsigned double word	r/w	Injection to load from database
+
+HVIP				# 344		DB001.DBD.344	unsigned double word	wo	IPV4 adresse of the HighVac
+																			in form of: a.b.c.d -> unsigned long as ((a<<24L) | (b<<16L) | (c<<8L) | d)
+																			
+HVRACK				# 348		DB001.DBW.348	unsigned word			wo	Rack position
+HVSLOT				# 350		DB001.DBW.350	unsigned word			wo	Slot position
+
+HVVACUSTART			# 352		DB001.DBW.352	unsigned word			wo	HighVac Vacustart signal address
+HVVACUSTARTBIT		# 354		DB001.DBW.354	unsigned word			wo	HighVac Vacustart signal bit
+
+HVDIEOPEN 			# 356		DB001.DBW.356	unsigned word			wo	HighVac DieOpen signal address
+HVDIEOPENBIT		# 358		DB001.DBW.358	unsigned word			wo	HighVac DieOpen signal bit
+
+HVT1				# 360		DB001.DBW.360	unsigned word			wo	HighVac T1 variable DB number
+HVT1BYTE			# 362		DB001.DBW.362	unsigned word			wo	HighVac T1 variable DB offset
+
+HVT2				# 364		DB001.DBW.364	unsigned word			wo	HighVac T2 variable DB number
+HVT2BYTE			# 366		DB001.DBW.366	unsigned word			wo	HighVac T2 variable DB offset
+
+HVT3				# 368		DB001.DBW.368	unsigned word			wo	HighVac T3 variable DB number
+HVT3BYTE			# 370		DB001.DBW.370	unsigned word			wo	HighVac T3 variable DB offset
+
+HVPRODNUM			# 372		DB001.DBW.372	unsigned word			wo	HighVac Production number variable DB number
+HVPRODNUMBYTE		# 374		DB001.DBW.374	unsigned word			wo	HighVac Production number variable DB offset
+
+HVPARTNUM			# 376		DB001.DBW.376	unsigned word			wo	HighVac Part Number variable DB number
+HVPARTNUMBYTE		# 378		DB001.DBW.378	unsigned word			wo	HighVac Part Number variable DB offset
+
+HVPARTNAME			# 380		DB001.DBW.380	unsigned word			wo	HighVac Part Name variable DB number
+HVPARTNAMEBYTE		# 382		DB001.DBW.382	unsigned word			wo	HighVac Part Name variable DB offset
+
+HVSHOTNUM			# 384		DB001.DBW.384	unsigned word			wo	HighVac Shot number variable DB number
+HVSHOTNUMEBYTE		# 386		DB001.DBW.386	unsigned word			wo	HighVac Shot Number variable DB offset
+
+_CPUID[2]			# 388		DB001.DBX.388	String[40]				ro	Unique Arm7 cpu id.
+
+Samples bloc from Humidity, proccessed ( DB10c.xxx.xxx, c is channel number starting at 0 ) 
+
+PROCESS_MAX				# 000		DB10c.DBW.000		unsigned word
+PROCESS_MIN				# 002		DB10c.DBW.002		unsigned word
+PROCESS_LCAL			# 004		DB10c.DBW.004		unsigned word
+PROCESS_FLAGS			# 006		DB10c.DBW.006		unsigned word
+PROCESS_FLAG_USEA		# 007.0		DB10c.DBW.006.0
+PROCESS_FLAG_USEB		# 007.0		DB10c.DBW.006.1
+PROCESS_FLAG_CONNECTED	# 007.0		DB10c.DBW.006.2
+PROCESS_FLAG_LIMIT_STS	# 007.0		DB10c.DBW.006.3
+PROCESS_FLAG_LIMIT_ERR	# 007.0		DB10c.DBW.006.4
+PROCESS_FLAG_CAL_ERROR	# 007.0		DB10c.DBW.006.5
+PROCESS_SAMPLE			# 008		DB10c.DBW.008		unsigned word
+PROCESS_CAL				# 010		DB10c.DBW.010		unsigned word
+PROCESS_CAL_RES			# 012		DB10c.DBW.012		unsigned word
+PROCESS_LIMIT_AVG		# 014		DB10c.DBW.014		unsigned word
+PROCESS_LIMIT_VALUE		# 016		DB10c.DBW.016		unsigned word
+PROCESS_LIMIT_START		# 018		DB10c.DBW.018		unsigned word
+PROCESS_LIMIT_STOP		# 020		DB10c.DBW.020		unsigned word
+PROCESS_PHY_ADDR		# 022		DB10c.DBW.022		unsigned word
+PROCESS_LOG_ADDR		# 024		DB10c.DBW.024		unsigned word
+PROCESS_DATA			# 026		DB10c.DBW.026		Array of word[ PROCESS_SAMPLE]
+
+Samples bloc from Temperature ( DB20c.xxx.xxx, c is channel number starting at 0 )
+
+TEMP_MAX				# 000		DB20c.DBW.000		unsigned word
+TEMP_MIN				# 002		DB20c.DBW.002		unsigned word
+TEMP_LCAL				# 004		DB20c.DBW.004		unsigned word
+TEMP_FLAGS				# 006		DB20c.DBW.006		unsigned word
+TEMP_SAMPLE				# 008		DB20c.DBW.008		unsigned word
+TEMP_CAL				# 010		DB20c.DBW.010		unsigned word
+TEMP_CAL_RES			# 012		DB20c.DBW.012		unsigned word
+TEMP_LIMIT_AVG			# 014		DB20c.DBW.014		unsigned word
+TEMP_LIMIT_VALUE		# 016		DB20c.DBW.016		unsigned word
+TEMP_LIMIT_START		# 018		DB20c.DBW.018		unsigned word
+TEMP_LIMIT_STOP			# 020		DB20c.DBW.020		unsigned word
+TEMP_PHY_ADDR			# 022		DB20c.DBW.022		unsigned word
+TEMP_LOG_ADDR			# 024		DB20c.DBW.024		unsigned word
+TEMP_DATA				# 026		DB20c.DBW.026		Array of word[ TEMP_SAMPLE]
+
+Samples bloc from Vaccum at sensor ( DB30c.xxx.xxx, c is channel number starting at 0 )
+
+VACCUM_MAX				# 000		DB30c.DBW.000		unsigned word
+VACCUM_MIN				# 002		DB30c.DBW.002		unsigned word
+VACCUM_LCAL				# 004		DB30c.DBW.004		unsigned word
+VACCUM_FLAGS			# 006		DB30c.DBW.006		unsigned word
+VACCUM_SAMPLE			# 008		DB30c.DBW.008		unsigned word
+VACCUM_CAL				# 010		DB30c.DBW.010		unsigned word
+VACCUM_CAL_RES			# 012		DB30c.DBW.012		unsigned word
+VACCUM_LIMIT_AVG		# 014		DB30c.DBW.014		unsigned word
+VACCUM_LIMIT_VALUE		# 016		DB30c.DBW.016		unsigned word
+VACCUM_LIMIT_START		# 018		DB30c.DBW.018		unsigned word
+VACCUM_LIMIT_STOP		# 020		DB30c.DBW.020		unsigned word
+VACCUM_PHY_ADDR			# 022		DB30c.DBW.022		unsigned word
+VACCUM_LOG_ADDR			# 024		DB30c.DBW.024		unsigned word
+VACCUM_DATA				# 026		DB30c.DBW.026		Array of word[ VACCUM_SAMPLE]
+
+Samples bloc from Vaccum from the HighVac mesure ( DB40c.xxx.xxx, c is channel number starting at 0 )
+
+HVVACCUM_MAX			# 000		DB40c.DBW.000		unsigned word
+HVVACCUM_MIN			# 002		DB40c.DBW.002		unsigned word
+HVVACCUM_LCAL			# 004		DB40c.DBW.004		unsigned word
+HVVACCUM_FLAGS			# 006		DB40c.DBW.006		unsigned word
+HVVACCUM_SAMPLE			# 008		DB40c.DBW.008		unsigned word
+HVVACCUM_CAL			# 010		DB40c.DBW.010		unsigned word
+HVVACCUM_CAL_RES		# 012		DB40c.DBW.012		unsigned word
+HVVACCUM_LIMIT_AVG		# 014		DB40c.DBW.014		unsigned word
+HVVACCUM_LIMIT_VALUE	# 016		DB40c.DBW.016		unsigned word
+HVVACCUM_LIMIT_START	# 018		DB40c.DBW.018		unsigned word
+HVVACCUM_LIMIT_STOP		# 020		DB40c.DBW.020		unsigned word
+HVVACCUM_PHY_ADDR		# 022		DB40c.DBW.022		unsigned word
+HVVACCUM_LOG_ADDR		# 024		DB40c.DBW.024		unsigned word
+HVVACCUM_DATA			# 026		DB40c.DBW.026		Array of word[ HVVACCUM_SAMPLE]
+
+Samples bloc from Humidity mesure from the sensor ( DB50c.xxx.xxx, c is channel number starting at 0 )
+
+HUMIDITY_MAX			# 000		DB50c.DBW.000		unsigned word
+HUMIDITY_MIN			# 002		DB50c.DBW.002		unsigned word
+HUMIDITY_LCAL			# 004		DB50c.DBW.004		unsigned word
+HUMIDITY_FLAGS			# 006		DB50c.DBW.006		unsigned word
+HUMIDITY_FLAG_USEA		# 007.0		DB50c.DBW.006.0
+HUMIDITY_FLAG_USEB		# 007.0		DB50c.DBW.006.1
+HUMIDITY_FLAG_CONNECTED	# 007.0		DB50c.DBW.006.2
+HUMIDITY_FLAG_LIMIT_STS	# 007.0		DB50c.DBW.006.3
+HUMIDITY_FLAG_LIMIT_ERR	# 007.0		DB50c.DBW.006.4
+HUMIDITY_FLAG_CAL_ERROR	# 007.0		DB50c.DBW.006.5
+HUMIDITY_SAMPLE			# 008		DB50c.DBW.008		unsigned word
+HUMIDITY_CAL			# 010		DB50c.DBW.010		unsigned word
+HUMIDITY_CAL_RES		# 012		DB50c.DBW.012		unsigned word
+HUMIDITY_LIMIT_AVG		# 014		DB50c.DBW.014		unsigned word
+HUMIDITY_LIMIT_VALUE	# 016		DB50c.DBW.016		unsigned word
+HUMIDITY_LIMIT_START	# 018		DB50c.DBW.018		unsigned word
+HUMIDITY_LIMIT_STOP		# 020		DB50c.DBW.020		unsigned word
+HUMIDITY_PHY_ADDR		# 022		DB50c.DBW.022		unsigned word
+HUMIDITY_LOG_ADDR		# 024		DB50c.DBW.024		unsigned word
+HUMIDITY_DATA			# 026		DB50c.DBW.026		Array of word[ HUMIDITY_SAMPLE]
+
+Limit line  from Humidity processed values ( DB60c.xxx.xxx, c is channel number starting at 0 )
+LIMIT_LINE_DATA			# 000		DB60c.DBW.000		Array of word[ 999 ]
+LIMIT_BAR_DATA			# 000		DB65c.DBW.000		Array of word[ 999 ]
+
+/##############################################################################################
+/#                                                                                             #
+/# COMMAND for Humidity program when run in console mode                                       #
+/# To start the program, Ctrl - Alt - F1 to get the console on the HDMI screen                 #
+/# From remote: ssh -X root@192.168.10.90     -> password is fondsav                           #
+/#                                                                                             #
+/# Kill the service with the command: service humidity stop                                    #
+/#                                                                                             #
+/# to start the normal version, simply use command: Humidity                                   #
+/# for the debug version: /root/spi_new/Humidity                                               #
+/#                                                                                             #
+/# at the end, to restart the service: service humidity start                                  #
+/###############################################################################################
+
+Command on the console:
+
+[q,Q]				Quit the programm gracefully
+[p]					Print the actual part name
+[n]					Print the actual internal production number
+[i]					Print the actual injection number
+[I]					Print Info ( part name, production number and injection
+[s]					Print some value read from MKII
+[S]					Print the state of the signal on the board ( Hardware input )
+[c]					Print the actual calibration value
+[C]					Request a forced calibration of all connected humidity sensor
+[y]					Try to read some signal via Profinet on the HV and print
+[r]					Read and printout the actual values of the sensors
+[+]					Simulate signal for testing:
+	[v,V]			Vacustart
+	[d,D]			DieOpen
+	[R]				Data Ready to be saved in DB
+
+					When a signal is not set, assumed to be FALSE
+					example: +Rd = Data Ready, die Open and no vacustart
+[a,A]				Simulate alarm for humidity level:
+	[h]				select only Humidity alarm
+	[c]				select only calibration alarm
+	
+[W]db addr value	Write a variable
+[R]db addr 			Read a variable
+										
+				
+

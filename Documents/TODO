@@ -1,0 +1,12 @@
+TODO:
+=====
+
+1)	create a pthead to manage the profinet interface to the DCM machine with an
+	S7_DCM class devived from TS7Client.
+	Muss check every 20ms the state of the input ( dieOpen, Vacustart )
+2)	Create and check the routine to use 4 channels
+3)	Create some internal variables to set all the functions
+		- IP address of the HV ( to read the value of T1, T2, T2 )
+		- Address of the Tx values
+		- IP address of the DCM with Profinet
+		- Address and bit used for the two needed signal
