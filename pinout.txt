@@ -1,0 +1,33 @@
+  Signal Osc.	  Cable Color DB25 	 Pin	  Cable Color Arduino	  Arduino Signal
+=========================================================================================
+| nc			| brun				| 1		|						|					|
+| nc			| rouge				| 2		|						|					|
+| D7			| orange			| 3		| rouge					| IN1				|
+| D6			| rose				| 4		| rose					| IN6				|
+| D5			| jaune				| 5		| jaune					| CANTX				|
+| D4			| vert				| 6		| vert					| CANRX				|
+| D3			| cyan				| 7		| gris					| MISO				|
+| D2			| bleu foncé		| 8		| bleu					| MOSI				|
+| D1			| bleu clair		| 9		| brun					| SCK				|
+| D0			| violet			| 10	| violet				| /CS ( CAN )		|
+| nc			| gris				| 11	|						|					|
+| nc			| blanc				| 12	|						|					|
+| nc			| noir				| 13	|						|					|
+| GND			| brun 		 - noir	| 14	| blanc					| GND				|
+| GND			| rouge 	 - noir	| 15	|						|					|
+| D15			| orange 	 - noir	| 16	| rouge 	- blanc		|					|
+| D14			| rose 		 - noir	| 17	| rose 		- blanc		|					|
+| D13			| jaune 	 - noir	| 18	| jaune		- blanc		| STAT2				|
+| D12			| vert		 - noir	| 19	| vert		- blanc		| STAT1				|
+| D11			| cyan		 - noir	| 20	| gris		- blanc		| SDA				|
+| D10			| bleu foncé - noir	| 21	| bleu		- brun		| SCL				|
+| D9			| bleu clair - noir	| 22	| bleu		- blanc		| INT ( DCM )		|
+| D8			| violet	 - noir	| 23	| noir		- blanc		| INT ( CAN )		|
+| GND			| gris		 - noir	| 24	| noir					| GND				|
+| nc			| blanc		 - noir	| 25	|						|					|
+| =============	|==================	| =====	|======================	|==================	|
+| Analogue CH1	| signal			| 39	|						|					|
+| Masse CH1		| blindage			| 40	|						|					|
+| Analogue CH2	| signal (jaune)	| 41	|						|					|
+| Masse CH2		| blindage (jaune)	| 42	|						|					|
+=========================================================================================
