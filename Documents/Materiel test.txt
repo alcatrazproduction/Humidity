@@ -1,0 +1,73 @@
+/*****************************************************************************
+ *	Author:		Yves Huguenin
+ *	Date:		26.05.2014
+ *	Version:	1.0
+ *
+ *
+ * **************************************************************************/
+
+ Module Humidité complet
+ =======================
+ 
+	- Boitier pot filtre
+	- Emeteur IR
+	- Recepteur IR
+	- Commande / numerisation dans petit boitier
+	- Tube PUN 8mm pour raccordement souflerie
+	- Clapet anti-retour 8mm 030-430
+	- Jeux de vitres
+
+	- Boitier de commande ( pcDuino )
+	- Cable vert pour raccordement commande HighVac Premium MKI
+	- Commande HighVac Premium Prototype MKI avec software humidité
+	- Cable alimentation orange adaptateur Schuko
+	- Cable voleur interface DCM
+	- Print émeteur de réserve
+	- Print recepteur de réserve
+	- Vitre de réserve
+	- Kit de joints de réserve
+
+	- Pot filtre complet dernière génération
+	
+Instruments de mesures
+======================
+
+	- Oscilloscope avec analyseur logique 16 voies
+	- Cable special Boitier commande -> oscilloscope
+	- Cable alimentation sans terre
+	- Multimetre éléctronique ( Fluke )
+	- Pied a coulisse
+
+Informatique
+============
+
+	- Laptop sous Linux
+	- Alimentation pour Laptop
+	- Cable réseau RJ45
+	- Clef USB sauvegarde
+	- Adaptateur USB -> serie TTL 5V
+	- Adaptateur USB -> serie TTL 3V3
+
+Outillage
+=========
+
+	- Table pliable
+	- Chaise de bar
+	- Fer a souder ( + soudure )
+	- Serie de résistance E12
+	- Divers raccord PUN
+	- Fils ( bleu, blanc, orange )
+	- Jeu de clef Inbus
+	- Clef a fourche 55
+	- Clef a fourche 50
+	- Clef a fourche 42
+	- Jeu de clefs a fourche standard ( 6 - > 19 )
+	- Pince multiprise
+	- Tourne vis en croix
+	- Tourne vis pour borne
+	- Pince a dénuder
+	- Pince a sertir pin interface
+	- Pince coupante
+	- Chifons
+	- Produits de netoyage ( Thinner, WD40,... )
+	

@@ -28,26 +28,41 @@
 #include <linux/types.h>
 #include <linux/spi/spidev.h>
 
-static void pabort(const char *s)
+#include "mcp_can.h"
+
+#define PIN_MODE_SPI 2
+
+#define GPIO_MODE_PATH "/sys/devices/virtual/misc/gpio/mode/"
+#define GPIO_FILENAME "gpio"
+//static
+
+static const 	char 		*default_device 	= "/dev/spidev0.0";
+static			char		*device				= (char *)default_device;
+static			uint8_t 	mode				= 0;
+static			uint8_t 	bits 				= 8;
+static			uint32_t 	speed 				= 500000;
+static			uint16_t 	thedelay			= 0;
+
+				int 		ret 		= 0;
+				int 		fd;
+
+void writeFile( int fileID, int value );
+static void setPinMode( int pinID, int mode )
 {
-	perror(s);
-	abort();
+	writeFile( pinID, mode );
 }
-
-static const char *device = "/dev/spidev0.0";
-static uint8_t mode;
-static uint8_t bits = 8;
-static uint32_t speed = 500000;
-static uint16_t delay;
-
-int ret = 0;
-int fd;
-
 
 static PyObject* openSPI(PyObject *self, PyObject *args, PyObject *kwargs)
 {
 
-	static char* kwlist[] = {"device", "mode", "bits", "speed", "delay", NULL};
+	static char* kwlist[] =
+							{	(char *)"device",
+								(char *)"mode",
+								(char *)"bits",
+								(char *)"speed",
+								(char *)"delay",
+								NULL
+							};
 
 	// Adding some sort of mode parsing would probably be a nice idea for the future, so you don't have to specify it as a bitfield
 	// stuffed into an int.
@@ -55,7 +70,7 @@ static PyObject* openSPI(PyObject *self, PyObject *args, PyObject *kwargs)
 	//
 
 
-	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|siiii:keywords", kwlist, &device, &mode, &bits, &speed, &delay))
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|siiii:keywords", kwlist, &device, &mode, &bits, &speed, &thedelay))
 		return NULL;
 	// It's not clearly documented, but it seems that PyArg_ParseTupleAndKeywords basically only modifies the values passed to it if the
 	// keyword pertaining to that value is passed to the function. As such, the defaults specified by the variable definition are used
@@ -68,7 +83,18 @@ static PyObject* openSPI(PyObject *self, PyObject *args, PyObject *kwargs)
 
 	// printf("Mode: %i, Bits: %i, Speed: %i, Delay: %i\n", mode, bits, speed, delay);
 
-
+	if( !strcmp( default_device, device ) )
+	{
+		char path[256];
+		for( int i = 10; i<= 13; i++ )
+		{
+			memset( path, 0, sizeof( path ) );
+			sprintf( path, "%s%s%d", GPIO_MODE_PATH, GPIO_FILENAME, i );
+			int pinMode = open( path, O_RDWR );
+			setPinMode( pinMode, PIN_MODE_SPI );
+			close( pinMode );
+		}
+	}
 
 	fd = open(device, O_RDWR);
 	if (fd < 0)
@@ -123,7 +149,7 @@ static PyObject* openSPI(PyObject *self, PyObject *args, PyObject *kwargs)
 	PyDict_SetItem(retDict, PyString_FromString("mode"), PyInt_FromLong((long)mode));
 	PyDict_SetItem(retDict, PyString_FromString("bits"), PyInt_FromLong((long)bits));
 	PyDict_SetItem(retDict, PyString_FromString("speed"), PyInt_FromLong((long)speed));
-	PyDict_SetItem(retDict, PyString_FromString("delay"), PyInt_FromLong((long)delay));
+	PyDict_SetItem(retDict, PyString_FromString("delay"), PyInt_FromLong((long)thedelay));
 
 
 	return retDict;
@@ -164,14 +190,16 @@ static PyObject* transfer(PyObject* self, PyObject* arg)
 
 	}
 
-	struct spi_ioc_transfer tr = {
-		.tx_buf = (unsigned long)tx,
-		.rx_buf = (unsigned long)rx,
-		.len = tupleSize,
-		.delay_usecs = delay,
-		.speed_hz = speed,
-		.bits_per_word = bits,
-                .cs_change = 1,
+	struct spi_ioc_transfer tr =
+	{
+		/*.tx_buf 			= */(unsigned long)tx,
+		/*.rx_buf 			= */(unsigned long)rx,
+		/*.len 				= */tupleSize,
+		/*.delay_usecs 			= */thedelay,
+		/*.speed_hz 			= */speed,
+		/*.bits_per_word		= */bits,
+		/*.cs_change 			=*/ 1,
+						    0
 	};
 
 	ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
@@ -192,17 +220,90 @@ static PyObject* closeSPI(PyObject* self,PyObject* args)
 	Py_RETURN_NONE;
 }
 
+// MCP.....
+static PyObject* mcp2515_begin(PyObject* self,PyObject* args)
+{
+INT8U	speed;
+
+	PyArg_ParseTuple( args, "b", &speed );
+	return Py_BuildValue( "b", CAN.begin( speed ) );
+}
+
+static PyObject* mcp2515_init_Mask(PyObject* self,PyObject* args)
+{
+INT8U	num;
+INT8U	ext;
+INT32U	ulData;
+
+	PyArg_ParseTuple( args, "bbk", &num,&ext,&ulData );
+	return Py_BuildValue( "b", CAN.init_Mask( num,ext,ulData ) );
+}
+
+static PyObject* mcp2515_init_Filt(PyObject* self,PyObject* args)
+{
+INT8U	num;
+INT8U	ext;
+INT32U	ulData;
+
+	PyArg_ParseTuple( args, "bbk", &num,&ext,&ulData );
+	return Py_BuildValue( "b", CAN.init_Filt( num,ext,ulData ) );
+}
+static PyObject* mcp2515_sendMsgBuf(PyObject* self,PyObject* args)
+{
+INT32U	id;
+INT8U	ext;
+INT8U	len;
+INT8U	*buf = NULL;
+
+	PyArg_ParseTuple( args, "kby#", &id,&ext, &buf, &len );
+	return Py_BuildValue( "b", CAN.sendMsgBuf( id,ext,len,buf ) );
+}
+static PyObject* mcp2515_readMsgBuf(PyObject* self,PyObject* args)
+{
+
+INT8U	len;
+INT8U	*buf[MAX_CHAR_IN_MESSAGE ];
+INT8U	ret;
+
+	ret = CAN.readMsgBuf( &len,(INT8U *)buf );
+	return Py_BuildValue( "by#",ret,buf,len );
+}
+
+static PyObject* mcp2515_checkReceive(PyObject* self,PyObject* args)
+{
+	return Py_BuildValue( "b", CAN.checkReceive( ) );
+}
+
+static PyObject* mcp2515_checkError(PyObject* self,PyObject* args)
+{
+	return Py_BuildValue( "b", CAN.checkError(  ) );
+}
+
+static PyObject* mcp2515_getCanId(PyObject* self,PyObject* args)
+{
+	return Py_BuildValue( "b", CAN.getCanId(  ) );
+}
+
 static PyMethodDef SpiMethods[] =
 {
-	{"openSPI", openSPI, METH_KEYWORDS, "Open SPI Port."},
-	{"transfer", transfer, METH_VARARGS, "Transfer data."},
-	{"closeSPI", closeSPI, METH_NOARGS, "Close SPI port."},
-	{NULL, NULL, 0, NULL}
+	{(char *)"openSPI", 		(PyCFunction)openSPI, 				METH_KEYWORDS, 	(char *)"Open SPI Port."},
+	{(char *)"transfer", 		(PyCFunction)transfer, 				METH_VARARGS, 	(char *)"Transfer data."},
+	{(char *)"closeSPI", 		(PyCFunction)closeSPI, 				METH_NOARGS, 	(char *)"Close SPI port."},
+	{(char *)"MCPbegin", 		(PyCFunction)mcp2515_begin, 		METH_VARARGS, 	(char *)"init can."},
+	{(char *)"MCPinit_Mask",	(PyCFunction)mcp2515_init_Mask, 	METH_VARARGS, 	(char *)"init Mask."},
+	{(char *)"MCPinit_Filt", 	(PyCFunction)mcp2515_init_Filt, 	METH_VARARGS, 	(char *)"init filters."},
+	{(char *)"MCPsendMsgBuf", 	(PyCFunction)mcp2515_sendMsgBuf, 	METH_VARARGS, 	(char *)"Send buffers."},
+	{(char *)"MCPreadMsgBuf", 	(PyCFunction)mcp2515_readMsgBuf, 	METH_NOARGS, 	(char *)"read Buffers."},
+	{(char *)"MCPcheckReceive",	(PyCFunction)mcp2515_checkReceive, 	METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"MCPcheckError", 	(PyCFunction)mcp2515_checkError, 	METH_NOARGS, 	(char *)"check error."},
+	{(char *)"MCPgetCanId", 	(PyCFunction)mcp2515_getCanId, 		METH_NOARGS, 	(char *)"get can id when receive."},
+	{(char *)NULL, 				(PyCFunction)NULL, 						0, 				(char *)NULL}
 };
 
 PyMODINIT_FUNC
 
 initspi(void)
 {
+	init(); 					// Init all the stuff for hw pin....
 	(void) Py_InitModule("spi", SpiMethods);
 }

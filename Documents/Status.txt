@@ -1,0 +1,66 @@
+[ ]		Partie mécanique Complette								En Attente fournisseurs
+																<- Migatec est sensé livré mi-aout 2014
+																-> Soucis pour le traitement thermique ( noiciçage, va prendre plusieurs jours ),
+																   inperatif de le réalisé pour des soucis de reflexion des infrarouges.
+																25.08.14: Migatec demande des infos sur le dessins....
+																01.09.2014: Reçu 2 pots filtre, erreur de 5mm sur l'entre axe des trous de nettoyage des vitres
+																            Pieces inutilisable en l'etat! Retour chez Migatec en catastrophe pour correction
+[ ]		Nouvelle éléctronique									Attente info Solutec
+																-> Mail envoye 11.08.14 pour demande info
+																<- Recu le nouveau protocole CAN, les prints vont
+																   suivre
+																01.09.2014: Jeucu un jeu de print electronique pour realiser un capteur a 2 canaux
+																Solutec devrait livre le 30 si les fournisseur suivent
+[ ]		Adaptation signaux profinet								En cours de développemnt
+[ ]		Boitier pour MKII										Recu 11.08.14, attente dessin definitif
+																-> Soucis avec le tuyau d'air, manque environ 10mm
+																<- va etre mis a cote des capteur de pression, en haut
+																   Attend de FSR pour les dessin
+																# pas certain que le boitier soie compatiblem, ne correspond pas a celui choisit
+																Réaliser un proto du boitier, tout semble tenir a l'interieur,
+																on verra des que les print definitif seront la
+[ ]		HV Trimet												Envoyée, mais pas prevue pour humidité, pas de commande du capteur
+																-> eventuellement changer le boitier sur place, plutot que de le percer.
+																   Un boitier doit etre envoyer en rep chez Construction Inox, profite de le faire percer
+																<-- ok pour remplacer tout le boitier
+																--> en attente des dessin de FSR
+[ ]		Visualisation  MKII										Crée mais pas testee
+[ ]		Multicapteur											Source en cours d'adaptation
+																Normalement Ok, mais pas tester
+[ ]		Vitres													Recu 11.08.14
+[ ]		Cables senseur											Ok
+[ ]		Cables SATA SSD											En attente
+																# recu !
+[ ]		Capteur pression										En attente fournisseur
+																Recu, mais mis en stock avec les autres....
+[ ]		Capteur température										En recherche
+[ ]		Affichage hardware										Recu, a definir ou le placer
+																# réalisé un hardware de test, ne fonctionne pas en SPI !
+																  Utilisation des lignes direct
+																Le hard semble bien fonctionner
+[ ]		Affichage software										Classe réalisée, ca passe a la compilation, a tester
+																Soucis de communication, en travail pour les modifications et validation
+[ ]		Commande d'affichage									En cours de réalisation.
+
+[ ]		Test en fonderie version 2 capteurs						Pas de date prévue, attendre version beta
+
+[ ]		Signaux de presse dans la MK2							16.09.2014: Disponible et trester
+																- Vacustart sortie 4
+																- DieOpen   sortie 5
+
+[ ]		Test avec 4 canaux										16.09.2014: Monte les 4 pot filtres, juste un soucis de
+																			com avec 1 modules, sinon 3 tourne OK
+[ ]		Normalisation											Modification du bloc de donnee transmit a l'écran pour zoomer la courbe
+
+//***************************************************************************************************************
+Wim: 079 285 2710
+
+Trimet:
+
+IP: 172.16.14.30
+subnet 0xffffff00
+gateway 192.16.14.2
+
+Acces VNC Trimet:
+
+ssh -L 5900:192.168.1.2:5900 -N -f -l root 172.16.14.30

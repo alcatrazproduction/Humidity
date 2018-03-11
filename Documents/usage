@@ -1,0 +1,54 @@
+makefile						229
+
+CAN.h							221
+CAN_MCP2515.h					504
+fondarex.h						279
+globals.h						107
+libdb.h							175
+mcp_can.h						91
+mcp_can_dfs.h					345
+profinet.h						13
+s7_client.h						116
+s7_server.h						447
+snap7.h							942
+solutec.h						326
+st7036.h						158
+
+TOTAL HEADER					3724 lignes
+
+database.py						208
+define.py						102
+hardware.py						150
+libdb.py						570
+modserver.py					873
+saveindb.py						153
+setup.py						23
+
+TOTAL Phyton					2079 lignes
+
+global_func.sql					82
+schema2.sql						129
+schema_func.sql					87
+
+TOTAL Sql						298 lignes
+
+CAN.cpp							58
+CAN_MCP2515.cpp					739
+global.cpp						122
+interrupt.cpp					458
+lcd_main.cpp					162
+libdb.cpp						626
+main.cpp						411
+mcp_can.cpp						795
+profinet.cpp					12
+s7_client.cpp					162
+s7_server.cpp					584
+solutec.cpp						755
+spi.cpp							828
+st7036.cpp						648
+
+Total Sources C++				6360 lignes
+
+
+Total lignes de code projet		10611 lignes
+Taile final compilé				885074 Bytes, 865KiloBytes
