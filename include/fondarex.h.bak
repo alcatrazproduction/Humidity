@@ -1,0 +1,196 @@
+/*****************************************************************************
+ *
+ *
+ *
+ *
+ *
+ *
+ * **************************************************************************/
+#ifndef __FONDAREX__
+#define __FONDAREX__
+
+// System includes
+
+#include <Python.h>
+#include <stdint.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <getopt.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <linux/types.h>
+#include <linux/spi/spidev.h>
+
+// globals Define
+
+#ifndef TRUE
+	#define TRUE (1==1)
+#endif
+#ifndef FALSE
+	#define FALSE (1==0)
+#endif
+
+// Define for pin usage....
+
+#define PIN_IN1			GPIO4
+#define PIN_IN2			GPIO6
+#define	PIN_MCP_INT		GPIO2
+#define PIN_MCP_CS		GPIO10
+#define PIN_STAT1		GPIO8
+#define PIN_STAT2		GPIO9
+#define WAIT_DELAY_BYTE	80
+#define RETRY			100
+// ******** Local Include ********
+
+#include "mcp_can.h"
+#include "solutec.h"
+#include "s7_server.h"
+#include "globals.h"
+
+/*******************************************************************************
+ *
+ * Declaration for Fondarex Python extension library
+ *
+ ******************************************************************************/ 
+
+#ifdef ___DECLARE_LIB__
+
+//static Prototype of function
+
+static PyObject* openSPI(PyObject *self, PyObject *args, PyObject *kwargs);
+static PyObject* transfer(PyObject* self, PyObject* arg);
+static PyObject* closeSPI(PyObject* self,PyObject* args);
+static PyObject* mcp2515_begin(PyObject* self,PyObject* args);
+static PyObject* mcp2515_init_Mask(PyObject* self,PyObject* args);
+static PyObject* mcp2515_init_Filt(PyObject* self,PyObject* args);
+static PyObject* mcp2515_sendMsgBuf(PyObject* self,PyObject* args);
+static PyObject* mcp2515_readMsgBuf(PyObject* self,PyObject* args);
+static PyObject* mcp2515_checkReceive(PyObject* self,PyObject* args);
+static PyObject* mcp2515_checkError(PyObject* self,PyObject* args);
+static PyObject* mcp2515_getCanId(PyObject* self,PyObject* args);
+static PyObject* getModuleInfo(PyObject* self,PyObject* args);
+static PyObject* setModuleInfo(PyObject* self,PyObject* args);
+static PyObject* getModuleStatus(PyObject* self,PyObject* args);
+static PyObject* setModuleStatus(PyObject* self,PyObject* args);
+static PyObject* getIrTxStatus(PyObject* self,PyObject* args);
+static PyObject* setIrTxStatus(PyObject* self,PyObject* args);
+static PyObject* getIrRxStatus(PyObject* self,PyObject* args);
+static PyObject* setIrRxStatus(PyObject* self,PyObject* args);
+static PyObject* getIrStatus(PyObject* self,PyObject* args);
+static PyObject* setIrStatus(PyObject* self,PyObject* args);
+static PyObject* mcp2515_reset(PyObject* self,PyObject* args);
+static PyObject* installInterrupt(PyObject* self,PyObject* args);
+static PyObject* removeInterrupt(PyObject* self,PyObject* args);
+static PyObject* getInterrupt(PyObject* self,PyObject* args);
+static PyObject* getData(PyObject* self,PyObject* args);
+static PyObject* setTimerValue(PyObject* self,PyObject* args);
+static PyObject* doCalibration(PyObject* self,PyObject* args);
+static PyObject* getMinMax(PyObject* self,PyObject* args);
+
+// ******************* for S7 module ********************
+// getter
+static PyObject* getVersion(PyObject* self,PyObject* args);
+static PyObject* getReadWrite(PyObject* self,PyObject* args);
+static PyObject* getCurrentInjection(PyObject* self,PyObject* args);
+static PyObject* getPartName(PyObject* self,PyObject* args);
+static PyObject* getProdNum(PyObject* self,PyObject* args);
+static PyObject* getT1(PyObject* self,PyObject* args);
+static PyObject* getT2(PyObject* self,PyObject* args);
+static PyObject* getT3(PyObject* self,PyObject* args);
+static PyObject* getCmd(PyObject* self,PyObject* args);
+static PyObject* getNumChan(PyObject* self,PyObject* args);
+static PyObject* getSampleRate(PyObject* self,PyObject* args);
+static PyObject* getLoadCurve(PyObject* self,PyObject* args);
+static PyObject* getReqCurve(PyObject* self,PyObject* args);
+// setter
+static PyObject* setVersion(PyObject* self,PyObject* args);
+static PyObject* setReadWrite(PyObject* self,PyObject* args);
+static PyObject* setCurrentInjection(PyObject* self,PyObject* args);
+static PyObject* setPartName(PyObject* self,PyObject* args);
+static PyObject* setProdNum(PyObject* self,PyObject* args);
+static PyObject* setT1(PyObject* self,PyObject* args);
+static PyObject* setT2(PyObject* self,PyObject* args);
+static PyObject* setT3(PyObject* self,PyObject* args);
+static PyObject* setCmd(PyObject* self,PyObject* args);
+static PyObject* setNumChan(PyObject* self,PyObject* args);
+static PyObject* setSampleRate(PyObject* self,PyObject* args);
+static PyObject* setLoadCurve(PyObject* self,PyObject* args);
+static PyObject* setReqCurve(PyObject* self,PyObject* args);
+// utility
+static PyObject* initS7(PyObject* self,PyObject* args);
+static PyObject* startS7(PyObject* self,PyObject* args);
+static PyObject* deleteS7(PyObject* self,PyObject* args);
+
+#define KeyFunc( func,com ) {(char *)#func,(PyCFunction)func,METH_KEYWORDS,(char *)#com},
+#define VarArgsFunc( func,com ) {(char *)#func,(PyCFunction)func,METH_VARARGS,(char *)#com},
+#define NoArgsFunc( func,com ) {(char *)#func,(PyCFunction)func,METH_NOARGS,(char *)#com},
+
+static PyMethodDef SpiMethods[] =
+{
+	{(char *)"openSPI", 			(PyCFunction)openSPI, 					METH_KEYWORDS, 	(char *)"Open SPI Port."},
+	{(char *)"transfer", 			(PyCFunction)transfer, 					METH_VARARGS, 	(char *)"Transfer data."},
+	{(char *)"closeSPI", 			(PyCFunction)closeSPI, 					METH_NOARGS, 	(char *)"Close SPI port."},
+	{(char *)"MCPbegin", 			(PyCFunction)mcp2515_begin, 			METH_VARARGS, 	(char *)"init can."},
+	{(char *)"MCPinit_Mask",		(PyCFunction)mcp2515_init_Mask, 		METH_VARARGS, 	(char *)"init Mask."},
+	{(char *)"MCPinit_Filt", 		(PyCFunction)mcp2515_init_Filt, 		METH_VARARGS, 	(char *)"init filters."},
+	{(char *)"MCPsendMsgBuf", 		(PyCFunction)mcp2515_sendMsgBuf, 		METH_VARARGS, 	(char *)"Send buffers."},
+	{(char *)"MCPreadMsgBuf", 		(PyCFunction)mcp2515_readMsgBuf, 		METH_NOARGS, 	(char *)"read Buffers."},
+	{(char *)"MCPcheckReceive",		(PyCFunction)mcp2515_checkReceive, 		METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"MCPcheckError", 		(PyCFunction)mcp2515_checkError, 		METH_NOARGS, 	(char *)"check error."},
+	{(char *)"MCPgetCanId", 		(PyCFunction)mcp2515_getCanId, 			METH_NOARGS, 	(char *)"get can id when receive."},
+	{(char *)"getModuleInfo",		(PyCFunction)getModuleInfo,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setModuleInfo",		(PyCFunction)setModuleInfo,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"getModuleStatus",		(PyCFunction)getModuleStatus,			METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setModuleStatus",		(PyCFunction)setModuleStatus,			METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"getIrTxStatus",		(PyCFunction)getIrTxStatus,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setIrTxStatus",		(PyCFunction)setIrTxStatus,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"getIrRxStatus",		(PyCFunction)getIrRxStatus,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setIrRxStatus",		(PyCFunction)setIrRxStatus,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"getIrStatus",			(PyCFunction)getIrStatus,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setIrStatus",			(PyCFunction)setIrStatus,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"MCPReset",			(PyCFunction)mcp2515_reset,				METH_NOARGS,   	(char *)"Send buffers."},
+	{(char *)"installInterrupt",	(PyCFunction)installInterrupt,			METH_NOARGS,   	(char *)"Send buffers."},
+	{(char *)"removeInterrupt",		(PyCFunction)removeInterrupt,			METH_NOARGS,   	(char *)"Send buffers."},
+	{(char *)"getInterrupt",		(PyCFunction)getInterrupt,				METH_NOARGS,   	(char *)"Send buffers."},
+	{(char *)"getData",				(PyCFunction)getData,					METH_NOARGS,   	(char *)"Send buffers."},
+	{(char *)"setTimerValue",		(PyCFunction)setTimerValue,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"doCalibration",		(PyCFunction)doCalibration,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"getMinMax",			(PyCFunction)getMinMax,					METH_NOARGS,   	(char *)"Get minimum and maximum values for all channel."},
+	{(char *)"getVersion",			(PyCFunction)getVersion, 				METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getReadWrite",		(PyCFunction)getReadWrite, 				METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getCurrentInjection",	(PyCFunction)getCurrentInjection, 		METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getPartName",			(PyCFunction)getPartName, 				METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getProdNum",			(PyCFunction)getProdNum, 				METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getT1",				(PyCFunction)getT1, 					METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getT2",				(PyCFunction)getT2, 					METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getT3",				(PyCFunction)getT3, 					METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getCmd",				(PyCFunction)getCmd,			 		METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getNumChan",			(PyCFunction)getNumChan, 				METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getSampleRate",		(PyCFunction)getSampleRate, 			METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getLoadCurve",		(PyCFunction)getLoadCurve, 				METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"getReqCurve",			(PyCFunction)getReqCurve, 				METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"setVersion",			(PyCFunction)setVersion,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setReadWrite",		(PyCFunction)setReadWrite,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setCurrentInjection",	(PyCFunction)setCurrentInjection,		METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setPartName",			(PyCFunction)setPartName,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setProdNum",			(PyCFunction)setProdNum,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setT1",				(PyCFunction)setT1,						METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setT2",				(PyCFunction)setT2,						METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setT3",				(PyCFunction)setT3,						METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setCmd",				(PyCFunction)setCmd,					METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setNumChan",			(PyCFunction)setNumChan,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setSampleRate",		(PyCFunction)setSampleRate,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setLoadCurve",		(PyCFunction)setLoadCurve,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"setReqCurve",			(PyCFunction)setReqCurve,				METH_VARARGS,   (char *)"Send buffers."},
+	{(char *)"initS7",				(PyCFunction)initS7, 					METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"startS7",				(PyCFunction)startS7, 					METH_NOARGS, 	(char *)"check if something arived."},
+	{(char *)"deleteS7",			(PyCFunction)deleteS7, 					METH_NOARGS, 	(char *)"check if something arived."},
+
+ 	{(char *)NULL,			(PyCFunction)NULL,				0, 			(char *)NULL}
+};
+
+PyMODINIT_FUNC initfondarex(void);
+
+#endif // ___DECLARE_LIB__
+#endif // __FONDAREX__

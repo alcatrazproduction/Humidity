@@ -1,0 +1,22 @@
+from distutils.core import setup, Extension
+
+module1 = Extension('fondarex', 
+	sources 	= ['src/spi.cpp','src/mcp_can.cpp','src/solutec.cpp','src/global.cpp','src/interrupt.cpp','src/s7_server.cpp', 'src/snap7.cpp'],
+	headers		= ['solutec.h'],
+	include_dirs 	= ['Arduino/hardware/arduino/cores/arduino/','Arduino/hardware/arduino/variants/sunxi/','Arduino/libraries/SPI/','include/'],
+	libraries	= ['arduino','snap7','mysqlcppconn','mysqlpp'],
+	library_dirs	= ['/usr/lib/','/usr/lib/mysql'],
+	extra_link_args = []
+	)
+
+setup (
+    name = 'fondarex',
+    author='Yves Huguenin',
+##    url='https://github.com/lthiery/SPI-Py',
+##    download_url='https://github.com/lthiery/SPI-Py/archive/master.zip',
+    version = '1.0',
+    description = 'Fondarex lib',
+    license='',
+    platforms=['Linux'],
+    ext_modules = [module1]
+)

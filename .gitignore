@@ -15,6 +15,7 @@ _ropeproject/
 *~
 *.o
 *.d
+*.*~
 build/
 cur/
 tmp/
