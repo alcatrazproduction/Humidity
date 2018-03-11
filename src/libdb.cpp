@@ -7,12 +7,12 @@
  *
  * **************************************************************************/
 
-#include "fondarex.h"
+#include "humidity.h"
 
 #define	MYSQL_HOST	"tcp://db.arduino.local:3306"
 #define MYSQL_USER	"arduinoyun"
 #define MYSQL_PASS	"fo1806ch"
-#define MYSQL_DB	"USE fondarexV2"
+#define MYSQL_DB	"USE HumidityV2"
 
 C_Connection::C_Connection( sql::Driver *driver)
 {

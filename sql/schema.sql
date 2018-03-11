@@ -6,7 +6,7 @@
  *
  *******************************************************************************************************/
 
-use fondarex;
+use Humidity;
 
 DROP TABLE IF EXISTS T_Injection;
 CREATE TABLE T_Injection

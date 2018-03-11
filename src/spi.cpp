@@ -2,7 +2,7 @@
 
 #define ___DECLARE_LIB__
 
-#include "fondarex.h"
+#include "humidity.h"
 
 //static
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- *  (c) FONDAREX SA
+ *  (c) ALCATRAZPRODUCTION
  *  $Author:       Yves Huguenin
  *  $Title:        terminal.h
  *  $Create Date:  31.10.2014
@@ -8,8 +8,8 @@
  *  1.0a1:
  *
  * **************************************************************************/
-#ifndef __FONDAREX_TERMINAL__
-#define __FONDAREX_TERMINAL__
+#ifndef __ALCATRAZPRODUCTION_TERMINAL__
+#define __ALCATRAZPRODUCTION_TERMINAL__
 
 
 class termial

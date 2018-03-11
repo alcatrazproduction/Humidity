@@ -6,7 +6,7 @@
  *
  *******************************************************************************************************/
 
-use fondarexV2;
+use HumidityV2;
 
 
 /********************* Some procedure for creating Demo datas ******************************************************************/
@@ -14,7 +14,7 @@ use fondarexV2;
 DELIMITER $$
 
 DROP FUNCTION IF EXISTS ReadChannel $$
-CREATE FUNCTION ReadChannel( theInjection bigint, theChannel char, thePage int  )
+CREATE FUNCTION ReadChannel( theInjection unsigned bigint, theChannel char, thePage int  )
 RETURNS varchar( 255 )
 BEGIN 
 
@@ -85,7 +85,7 @@ END;
 $$
 
 DROP FUNCTION IF EXISTS CreateCsv $$
-CREATE FUNCTION CreateCsv( theInjection bigint, theSep char)
+CREATE FUNCTION CreateCsv( theInjection unsigned bigint, theSep char)
 RETURNS TEXT
 
 BEGIN
@@ -96,7 +96,7 @@ DECLARE done 					int 	DEFAULT FALSE;
 DECLARE i 						int 	DEFAULT 0;
 DECLARE samples 				int 	DEFAULT 0;
 
-DECLARE ci_id 					bigint(20);
+DECLARE ci_id 					unsigned bigint(20);
 DECLARE ci_part_name 			varchar(80);
 DECLARE ci_prod_num 			int(11);
 DECLARE ci_injection 			int(11);
@@ -108,10 +108,10 @@ DECLARE ci_cal_a 				int(11);
 DECLARE ci_cal_b 				int(11);
 DECLARE ci_cal_c 				int(11);
 DECLARE ci_cal_d 				int(11);
-DECLARE ci_hv_injection 		bigint(20);
+DECLARE ci_hv_injection 		unsigned bigint(20);
 
-DECLARE cc_id 					bigint(20);
-DECLARE cc_injection_id 		bigint(20);
+DECLARE cc_id 					unsigned bigint(20);
+DECLARE cc_injection_id 		unsigned bigint(20);
 DECLARE cc_channel 				int(11);
 DECLARE cc_sample_count 		int(11);
 DECLARE cc_sample_rate 			int(11);

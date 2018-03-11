@@ -95,15 +95,15 @@ desc T_Globals
 
 */
 
-use fondarexV2;
+use HumidityV2;
 /* Create the new table......
 */
 
 DROP TABLE IF EXISTS T_Channel_Info;
 CREATE TABLE T_Channel_Info
 (
-	id 					bigint 			PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	injection_id 		bigint 			NOT NULL,
+	id 					unsigned bigint 			PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	injection_id 		unsigned bigint 			NOT NULL,
 	channel 			int 			NOT NULL,
 	sample_count 		int,
 	sample_rate 		int 			DEFAULT 20,
@@ -147,7 +147,7 @@ CREATE FUNCTION CreateSampleTime( inj_id bigint )
 RETURNS bool
 BEGIN
 
-DECLARE minid    bigint;
+DECLARE minid    unsigned bigint;
 DECLARE rate     int;
 DECLARE ok       int;
 

@@ -1,7 +1,7 @@
 /*
 * RTC test program
 */
-#include "fondarex.h"
+#include "humidity.h"
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
 #include <time.h>

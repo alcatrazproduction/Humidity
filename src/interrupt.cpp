@@ -8,7 +8,7 @@
  * **************************************************************************/
 
 
-#include "fondarex.h"
+#include "humidity.h"
 
 extern	pid_t		mainPid;
 extern	pid_t		childPid;

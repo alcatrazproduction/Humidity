@@ -9,7 +9,7 @@
 
 
 
-#include "fondarex.h"
+#include "humidity.h"
 
 #define spi_RW_End(aa) SPI.transfer( aa,SPI_LAST )
 #define spi_RW(aa)     SPI.transfer( aa, SPI_CONTINUE )

@@ -6,8 +6,8 @@
  *
  *
  * **************************************************************************/
-#ifndef __FONDAREX_GLOBAL__
-#define __FONDAREX_GLOBAL__
+#ifndef __ALCATRAZPRODUCTION_GLOBAL__
+#define __ALCATRAZPRODUCTION_GLOBAL__
 
 
 // global..... MCP

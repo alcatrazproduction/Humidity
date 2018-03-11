@@ -7,7 +7,7 @@
  *
  * **************************************************************************/
 #define S7_STATIC
-#include "fondarex.h"
+#include "humidity.h"
 #include "s7_server_name.h"
 
 					

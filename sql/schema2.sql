@@ -8,12 +8,12 @@
  *
  *******************************************************************************************************/
 
-use fondarexV2;
+use HumidityV2;
 
 DROP TABLE IF EXISTS T_Injection;
 CREATE TABLE T_Injection
 (
-	id				bigint			PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	id				unsigned bigint			PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	part_name		varchar(80),
 	prod_num		int,
 	injection		int,
@@ -25,14 +25,14 @@ CREATE TABLE T_Injection
 	cal_b			int,
 	cal_c			int,
 	cal_d			int,
-	hv_injection	bigint
+	hv_injection	unsigned bigint
 );
 
 DROP TABLE IF EXISTS T_Humidity_Value;
 CREATE TABLE T_Humidity_Value
 (
-	id				bigint			PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	injection_id	bigint			NOT NULL,
+	id				unsigned bigint			PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	injection_id	unsigned bigint			NOT NULL,
 	channel_a		int,
 	channel_b		int,
 	channel_c		int,
@@ -55,8 +55,8 @@ CREATE TABLE T_Humidity_Value
 DROP TABLE IF EXISTS T_Channel_Info;
 CREATE TABLE T_Channel_Info
 (
-	id 					bigint 			PRIMARY KEY NOT NULL AUTO_INCREMENT,
-	injection_id 		bigint 			NOT NULL,
+	id 					unsigned bigint 			PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	injection_id 		unsigned bigint 			NOT NULL,
 	channel 			int 			NOT NULL,
 	sample_count 		int,
 	sample_rate 		int 			DEFAULT 20,
