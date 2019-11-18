@@ -1,0 +1,9 @@
+Planning to change the hardware of the sensor.
+
+Actualy based on a pic processor.
+
+new hardware will use an Espresif ESP32 Wroom chip board 
+witch include a CAN driver, ADC and DAC.
+
+Also we may use the wireless connection if we a sure of the security
+
