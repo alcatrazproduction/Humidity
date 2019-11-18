@@ -1,5 +1,5 @@
 /*****************************************************************************
- *  (c) FONDAREX SA
+ *  
  *  $Author:       Yves Huguenin
  *  $Title:        libdb.py
  *  $Create Date:  09.05.2014
@@ -8,8 +8,8 @@
  *  1.0a1:
  *
  * **************************************************************************/
-#ifndef __FONDAREX_LIBDB__
-#define __FONDAREX_LIBDB__
+#ifndef __ALCATRAZ_LIBDB__
+#define __ALCATRAZ_LIBDB__
 
 #include <pthread.h>
 

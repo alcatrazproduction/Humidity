@@ -10,11 +10,11 @@
 ##	libraries	= ['arduino'],
 ##	library_dirs	= ['/usr/lib/'],
 
-headers		:= 	include/solutec.h 	include/fondarex.h 	include/globals.h 	include/mcp_can.h 	\
+headers		:= 	include/solutec.h 	include/humidity.h 	include/globals.h 	include/mcp_can.h 	\
 			include/mcp_can_dfs.h	include/s7_server.h 	include/snap7.h 	include/libdb.h 	\
 			include/CAN_MCP2515.h 	include/CAN.h		include/s7_client.h 	include/st7036.h
 		   
-headers_small	:= 	include/fondarex.h 	include/st7036.h
+headers_small	:= 	include/humidity.h 	include/st7036.h
 
 Libs		:= 	-lsnap7  		-lmysqlcppconn 		-lmysqlpp
 Wrapper		:= 	snap7.cpp

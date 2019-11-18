@@ -13,5 +13,5 @@ class Application( tk.Frame ):
 		self.quitButton.grid()
 
 app = Application()
-app.master.title('Humidity sensor Panel, (c) Yves Huguenin, Fondarex')
+app.master.title('Humidity sensor Panel, (c) Yves Huguenin')
 app.mainloop()

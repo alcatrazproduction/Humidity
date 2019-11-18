@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-#  (c) FONDAREX SA
+#  
 #  $Author:       Yves Huguenin
 #  $Title:        humidity_cron.py
 #  $Create Date:  23.09.2014
