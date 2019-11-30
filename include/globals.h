@@ -9,7 +9,6 @@
 #ifndef __ALCATRAZPRODUCTION_GLOBAL__
 #define __ALCATRAZPRODUCTION_GLOBAL__
 
-
 // global..... MCP
 
 const		extern	char *			CAN_error[];

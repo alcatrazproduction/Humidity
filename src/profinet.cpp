@@ -8,7 +8,7 @@
  * **************************************************************************/
 
 #include "humidity.h"
-
+// TODO: Remove the protection
 unsigned char	reserved_cpu_id[]	= "ID:165166878048517249484848058283c6";
 
 static const unsigned char 	copyright[] 	= "Yves Huguenin\nCase postale 276\nCH-1814 La Tour-de-Peilz\nSwitzerland\nmailto:yves.huguenin@dreampitbikes.ch\nhttp://www.tricala.org/";

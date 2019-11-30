@@ -11,8 +11,6 @@
 #ifndef __ALCATRAZPRODUCTION__
 #define __ALCATRAZPRODUCTION__
 
-
-
 #ifdef DEBUG
 #	if DEBUG > 1
 #		define	PRINT_DEBUG( ... )	PRINTF ( stderr, __VA_ARGS__ );
@@ -285,4 +283,4 @@ static PyMethodDef SpiMethods[] =
 PyMODINIT_FUNC initfondarex(void);
 
 #endif // ___DECLARE_LIB__
-#endif // __FONDAREX__
+#endif //
