@@ -1923,7 +1923,7 @@ static const int	emptyString=0x0;
 
 const char 		*getVarName(unsigned short db, unsigned short addr)
 {
-	switch( db )
+	switch( db )       // TODO: Remove offuscation
 	{
 #define ___THE_DB___ 001
 CASE_THE_DB
